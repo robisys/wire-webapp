@@ -30,7 +30,8 @@ module.exports =
       'deploy/min/wire-vendor.min.js': '<%= scripts.vendor %>'
     options:
       banner: '/*! <%= pkg.name %> - <%= grunt.option("version") %> */'
-      preserveComments: false
-      screwIE8: true
-      sourceMap: true
-      sourceMapIncludeSources: true
+      ie8: false
+      output:
+        preserveComments: false
+      sourceMap:
+        includeSources: true
