@@ -53,7 +53,7 @@ z.media.MediaEmbeds = (function() {
 
       // Build the iframe/webview
       let iframe_container = '<div class="{0}">';
-      if(z.util.Environment.electron) {
+      if (z.util.Environment.electron) {
         iframe_container += `<webview class="{1}" style="display:inline-flex; width:{2}; height:{3}" src="{4}" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></webview>`;
       } else {
         iframe_container += `<iframe class="{1}" width="{2}" height="{3}" src="{4}" sandbox="allow-scripts allow-same-origin" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></iframe>`;

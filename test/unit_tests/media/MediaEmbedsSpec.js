@@ -38,24 +38,24 @@ describe('MediaEmbeds', function() {
 
   const build_youtube_iframe = function(link) {
     const embed_url = z.media.MediaEmbeds.generate_youtube_embed_url(link);
-    return `<a href="${link}" target="_blank" rel="nofollow">${link}</a><div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="${embed_url}" frameborder="0" allowfullscreen></iframe></div>`;
+    return `${build_message_with_anchor(link)}<div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="${embed_url}" sandbox="allow-scripts allow-same-origin" frameborder="0" allowfullscreen="true"></iframe></div>`;
   };
 
   const build_soundcloud_iframe_for_tracks = function(link) {
-    return `<a href="${link}" target="_blank" rel="nofollow">${link}</a><div class="iframe-container"><iframe class="soundcloud" width="100%" height="164" src="https://w.soundcloud.com/player/?url=${link}&visual=false&show_comments=false&buying=false&show_playcount=false&liking=false&sharing=false&hide_related=true" frameborder="0"></iframe></div>`;
+    return `${build_message_with_anchor(link)}<div class="iframe-container"><iframe class="soundcloud" width="100%" height="164" src="https://w.soundcloud.com/player/?url=${link}&amp;visual=false&amp;show_comments=false&amp;buying=false&amp;show_playcount=false&amp;liking=false&amp;sharing=false&amp;hide_related=true" sandbox="allow-scripts allow-same-origin" frameborder="0"></iframe></div>`;
   };
 
   const build_soundcloud_iframe_for_playlists = function(link) {
-    return `<a href="${link}" target="_blank" rel="nofollow">${link}</a><div class="iframe-container"><iframe class="soundcloud" width="100%" height="465" src="https://w.soundcloud.com/player/?url=${link}&visual=false&show_comments=false&buying=false&show_playcount=false&liking=false&sharing=false&hide_related=true" frameborder="0"></iframe></div>`;
+    return `${build_message_with_anchor(link)}<div class="iframe-container"><iframe class="soundcloud" width="100%" height="465" src="https://w.soundcloud.com/player/?url=${link}&amp;visual=false&amp;show_comments=false&amp;buying=false&amp;show_playcount=false&amp;liking=false&amp;sharing=false&amp;hide_related=true" sandbox="allow-scripts allow-same-origin" frameborder="0"></iframe></div>`;
   };
 
   const build_spotify_iframe = function(link, partial_link) {
     partial_link = partial_link.replace(/\//g, ':');
-    return `<a href="${link}" target="_blank" rel="nofollow">${link}</a><div class="iframe-container"><iframe class="spotify" width="100%" height="80px" src="https://embed.spotify.com/?uri=spotify%3A${window.encodeURIComponent(partial_link)}" frameborder="0"></iframe></div>`;
+    return `${build_message_with_anchor(link)}<div class="iframe-container"><iframe class="spotify" width="100%" height="80px" src="https://embed.spotify.com/?uri=spotify%3A${window.encodeURIComponent(partial_link)}" sandbox="allow-scripts allow-same-origin" frameborder="0"></iframe></div>`;
   };
 
   const build_vimeo_iframe = function(link, id) {
-    return `<a href="${link}" target="_blank" rel="nofollow">${link}</a><div class="iframe-container iframe-container-video"><iframe class="vimeo" width="100%" height="100%" src="https://player.vimeo.com/video/${id}?portrait=0&color=333&badge=0" frameborder="0" allowfullscreen></iframe></div>`;
+    return `${build_message_with_anchor(link)}<div class="iframe-container iframe-container-video"><iframe class="vimeo" width="100%" height="100%" src="https://player.vimeo.com/video/${id}?portrait=0&amp;color=333&amp;badge=0" sandbox="allow-scripts allow-same-origin" frameborder="0" allowfullscreen="true"></iframe></div>`;
   };
 
   describe('regex', function() {
@@ -236,7 +236,7 @@ describe('MediaEmbeds', function() {
       });
 
       it('renders another mobile link (https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&feature=youtu.be)', function() {
-        const link = 'https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&feature=youtu.be';
+        const link = 'https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&amp;feature=youtu.be';
 
         const message = build_message_with_anchor(link);
         const iframe = build_youtube_iframe(link);
@@ -254,7 +254,7 @@ describe('MediaEmbeds', function() {
         const link = 'https://www.youtube-nocookie.com/watch?v=oHg5SJYRHA0&autoplay=1';
 
         const message = build_message_with_anchor(link);
-        const iframe = '<a href="https://www.youtube-nocookie.com/watch?v=oHg5SJYRHA0&autoplay=1" target="_blank" rel="nofollow">https://www.youtube-nocookie.com/watch?v=oHg5SJYRHA0&autoplay=1</a><div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/oHg5SJYRHA0?html5=1" frameborder="0" allowfullscreen></iframe></div>';
+        const iframe = '<a href="https://www.youtube-nocookie.com/watch?v=oHg5SJYRHA0&autoplay=1" target="_blank" rel="nofollow">https://www.youtube-nocookie.com/watch?v=oHg5SJYRHA0&autoplay=1</a><div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/oHg5SJYRHA0?html5=1" sandbox="allow-scripts allow-same-origin" frameborder="0" allowfullscreen="true"></iframe></div>';
 
         expect(z.media.MediaParser.render_media_embeds(message)).toBe(iframe);
       });
@@ -263,7 +263,7 @@ describe('MediaEmbeds', function() {
         const link = 'https://www.youtube-nocookie.com/watch?autoplay=1&v=oHg5SJYRHA0';
 
         const message = build_message_with_anchor(link);
-        const iframe = '<a href="https://www.youtube-nocookie.com/watch?autoplay=1&v=oHg5SJYRHA0" target="_blank" rel="nofollow">https://www.youtube-nocookie.com/watch?autoplay=1&v=oHg5SJYRHA0</a><div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/oHg5SJYRHA0?html5=1" frameborder="0" allowfullscreen></iframe></div>';
+        const iframe = '<a href="https://www.youtube-nocookie.com/watch?autoplay=1&v=oHg5SJYRHA0" target="_blank" rel="nofollow">https://www.youtube-nocookie.com/watch?autoplay=1&v=oHg5SJYRHA0</a><div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/oHg5SJYRHA0?html5=1" sandbox="allow-scripts allow-same-origin" frameborder="0" allowfullscreen="true"></iframe></div>';
 
         expect(z.media.MediaParser.render_media_embeds(message)).toBe(iframe);
       });
