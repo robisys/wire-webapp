@@ -31,8 +31,9 @@ z.media.MediaEmbeds = (function() {
    * @returns {string} HTML string
    */
   const _create_iframe_container = function(options) {
+
     const defaults = {
-      allowfullscreen: ' allowfullscreen',
+      allowfullscreen: true,
       class: 'iframe-container iframe-container-video',
       frameborder: '0',
       height: '100%',
@@ -42,18 +43,25 @@ z.media.MediaEmbeds = (function() {
     };
 
     options = _.extend(defaults, options);
-    const iframe_container = `<div class="{0}"><iframe class="${options.type}" width="{1}" height="{2}" src="{3}" frameborder="{4}"{5}></iframe></div>`;
 
     if (!options.video) {
-      options.allowfullscreen = '';
+      options.allowfullscreen = false;
       options.class = 'iframe-container';
     }
 
-    if (z.util.Environment.desktop) {
-      options.allowfullscreen = '';
-    }
+    return z.util.StringUtil.format((() => {
 
-    return z.util.StringUtil.format(iframe_container, options.class, options.width, options.height, options.src, options.frameborder, options.allowfullscreen);
+      // Build the iframe/webview
+      let iframe_container = '<div class="{0}">';
+      if(z.util.Environment.electron) {
+        iframe_container += `<webview class="{1}" style="display:inline-flex; width:{2}; height:{3}" src="{4}" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></webview>`;
+      } else {
+        iframe_container += `<iframe class="{1}" width="{2}" height="{3}" src="{4}" sandbox="allow-scripts allow-same-origin" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></iframe>`;
+      }
+      iframe_container += '</div>';
+
+      return iframe_container;
+    })(), options.class, options.type, options.width, options.height, options.src, options.frameborder);
   };
 
   // Enum of different regex for the supported services.
