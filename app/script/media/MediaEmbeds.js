@@ -52,15 +52,14 @@ z.media.MediaEmbeds = (function() {
     return z.util.StringUtil.format((() => {
 
       // Build the iframe/webview
-      let iframe_container = '<div class="{0}">';
+      let container;
       if (z.util.Environment.browser.supports.webviews) {
-        iframe_container += `<webview class="{1}" style="display:inline-flex; width:{2}; height:{3}" src="{4}" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></webview>`;
+        container = `<webview class="{1}" style="display:inline-flex; width:{2}; height:{3}" src="{4}" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></webview>`;
       } else {
-        iframe_container += `<iframe class="{1}" width="{2}" height="{3}" src="{4}" sandbox="allow-scripts allow-same-origin" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></iframe>`;
+        container = `<iframe class="{1}" width="{2}" height="{3}" src="{4}" sandbox="allow-scripts allow-same-origin" frameborder="{5}"${(options.allowfullscreen ? ' allowfullscreen="true"' : '')}></iframe>`;
       }
-      iframe_container += '</div>';
 
-      return iframe_container;
+      return `<div class="{0}">${container}</div>`;
     })(), options.class, options.type, options.width, options.height, options.src, options.frameborder);
   };
 
