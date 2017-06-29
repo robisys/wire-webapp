@@ -33,8 +33,8 @@ z.media.MediaEmbeds = (function() {
   const _create_iframe_container = function(options) {
 
     const defaults = {
-      allowfullscreen: true,
-      class: 'iframe-container iframe-container-video',
+      allowfullscreen: false,
+      class: 'iframe-container',
       frameborder: '0',
       height: '100%',
       type: 'default',
@@ -44,9 +44,9 @@ z.media.MediaEmbeds = (function() {
 
     options = _.extend(defaults, options);
 
-    if (!options.video) {
-      options.allowfullscreen = false;
-      options.class = 'iframe-container';
+    if (options.video) {
+      options.allowfullscreen = true;
+      options.class += ' iframe-container-video';
     }
 
     return z.util.StringUtil.format((() => {
