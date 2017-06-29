@@ -23,7 +23,7 @@
 
 // grunt test_init && grunt test_run:media/MediaEmbeds
 describe('MediaEmbeds', function() {
-// Will test all common link variations
+  // Will test all common link variations
   const test_link_variants = function(site, re) {
     expect(`http://${site}.com`.match(re)).toBe(null);
     expect(`https://${site}.com`.match(re)).toBe(null);
@@ -37,7 +37,7 @@ describe('MediaEmbeds', function() {
   const build_message_with_anchor = (link) => `<a href="${link}" target="_blank" rel="nofollow">${link}</a>`;
 
   const build_youtube_iframe = function(link) {
-    const embed_url = z.media.MediaEmbeds.generate_youtube_embed_url(link);
+    const embed_url = z.util.escape_html(z.media.MediaEmbeds.generate_youtube_embed_url(link));
     return `${build_message_with_anchor(link)}<div class="iframe-container iframe-container-video"><iframe class="youtube" width="100%" height="100%" src="${embed_url}" sandbox="allow-scripts allow-same-origin" frameborder="0" allowfullscreen="true"></iframe></div>`;
   };
 
@@ -236,7 +236,7 @@ describe('MediaEmbeds', function() {
       });
 
       it('renders another mobile link (https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&feature=youtu.be)', function() {
-        const link = 'https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&amp;feature=youtu.be';
+        const link = 'https://www.youtube-nocookie.com/watch?v=1w4Gf97q2oU&feature=youtu.be';
 
         const message = build_message_with_anchor(link);
         const iframe = build_youtube_iframe(link);
