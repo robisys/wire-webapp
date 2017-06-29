@@ -45,17 +45,17 @@ window.z.util = z.util || {};
   };
 
   const _check = {
-    get_version: function() {
-      if (platform.version) {
-        return window.parseInt(platform.version.split('.')[0], 10);
-      }
-    },
     get_electron_version: function(user_agent) {
       const result = /(Wire|WireInternal)\/(\S+)/.exec(user_agent);
       if (result) {
         return result[2]; // [match, app, version]
       }
       return undefined;
+    },
+    get_version: function() {
+      if (platform.version) {
+        return window.parseInt(platform.version.split('.')[0], 10);
+      }
     },
     is_chrome: function() {
       return platform.name === BROWSER_NAME.CHROME;
