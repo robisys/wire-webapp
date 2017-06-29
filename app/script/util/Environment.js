@@ -104,6 +104,10 @@ window.z.util = z.util || {};
       }
       return this.is_firefox();
     },
+    supports_webviews: function() {
+      // Only available in the wrapper since 2.15
+      return (_check.is_desktop() && window.electron_version.localeCompare('2.15') !== -1);
+    },
   };
 
   const os = {
@@ -163,6 +167,7 @@ window.z.util = z.util || {};
         media_devices: _check.supports_media_devices(),
         notifications: _check.supports_notifications(),
         screen_sharing: _check.supports_screen_sharing(),
+        webviews: _check.supports_webviews(),
       },
       version: _check.get_version(),
     },
