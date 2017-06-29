@@ -110,8 +110,10 @@ z.calling.entities.Call = class Call {
     this.participants_count = ko.pureComputed(() => this.get_number_of_participants(this.self_user_joined()));
 
     // Observable subscriptions
+    this.was_connected = false;
     this.is_connected.subscribe((is_connected) => {
       if (is_connected) {
+        this.was_connected = true;
         if (this.is_group) {
           this.schedule_group_check();
         }
@@ -201,17 +203,15 @@ z.calling.entities.Call = class Call {
    * @returns {undefined} No return value
    */
   deactivate_call(call_message_et, termination_reason = z.calling.enum.TERMINATION_REASON.SELF_USER) {
-    const was_missed = z.calling.enum.CALL_STATE_GROUP.WAS_MISSED.includes(this.state());
-    const reason = was_missed ? z.calling.enum.TERMINATION_REASON.MISSED : z.calling.enum.TERMINATION_REASON.COMPLETED;
+    const reason = !this.was_connected ? z.calling.enum.TERMINATION_REASON.MISSED : z.calling.enum.TERMINATION_REASON.COMPLETED;
 
     this.termination_reason = termination_reason;
-    this.calling_repository.inject_deactivate_event(call_message_et, this.creating_user, reason);
+    this.calling_repository.inject_deactivate_event(call_message_et, z.event.EventRepository.SOURCE.WEB_SOCKET, this.creating_user, reason);
 
     if (this.participants().length <= 1) {
-      this.calling_repository.delete_call(this.id);
-    } else {
-      this.calling_repository.media_stream_handler.reset_media_stream();
+      return this.calling_repository.delete_call(this.id);
     }
+    this.calling_repository.media_stream_handler.reset_media_stream();
   }
 
   /**
@@ -407,10 +407,10 @@ z.calling.entities.Call = class Call {
         const additional_payload = z.calling.CallMessageBuilder.create_payload(this.id, this.self_user.id);
 
         this.send_call_message(z.calling.CallMessageBuilder.build_group_check(true, this.session_id, additional_payload));
-        this.schedule_group_check();
-      } else {
-        this.leave_call(z.calling.enum.TERMINATION_REASON.OTHER_USER);
+        return this.schedule_group_check();
       }
+
+      this.leave_call(z.calling.enum.TERMINATION_REASON.OTHER_USER);
     }, timeout_in_seconds * 1000);
   }
 
