@@ -348,7 +348,6 @@ z.conversation.EventMapper = class EventMapper {
     return message_et;
   }
 
-
   /**
    * Maps JSON data of conversation.rename message into message entity
    *

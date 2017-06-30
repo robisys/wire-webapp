@@ -45,7 +45,7 @@ window.z.util = z.util || {};
   };
 
   const _check = {
-    get_electron_version: function(user_agent) {
+    get_desktop_version: function(user_agent) {
       const result = /(Wire|WireInternal)\/(\S+)/.exec(user_agent);
       if (result) {
         return result[2]; // [match, app, version]
@@ -113,8 +113,8 @@ window.z.util = z.util || {};
     },
     supports_webviews: function() {
       // Only available in the wrapper since 2.15
-      const electron_version = _check.get_electron_version(navigator.userAgent);
-      return (_check.is_desktop() && typeof electron_version !== 'undefined' && electron_version.localeCompare('2.15') !== -1);
+      const desktop_version = _check.get_desktop_version(navigator.userAgent);
+      return (_check.is_desktop() && typeof desktop_version !== 'undefined' && desktop_version.localeCompare('2.15') !== -1);
     },
   };
 
@@ -147,7 +147,7 @@ window.z.util = z.util || {};
   };
 
   z.util.Environment = {
-    _electron_version: _check.get_electron_version,
+    _desktop_version: _check.get_desktop_version,
     backend: {
       account_url: function() {
         if (z.util.Environment.backend.current === z.service.BackendEnvironment.PRODUCTION) {
@@ -204,9 +204,9 @@ window.z.util = z.util || {};
         return app_version();
       }
 
-      const electron_version = _check.get_electron_version(navigator.userAgent);
-      if (electron_version && show_wrapper_version) {
-        return electron_version;
+      const desktop_version = _check.get_desktop_version(navigator.userAgent);
+      if (desktop_version && show_wrapper_version) {
+        return desktop_version;
       }
 
       return formatted_app_version();
