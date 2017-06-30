@@ -46,7 +46,7 @@ z.media.MediaEmbeds = (function() {
 
     if (options.video) {
       options.allowfullscreen = true;
-      options.class += ' iframe-container-video';
+      options.class = `${options.class} iframe-container-video`;
     }
 
     return z.util.StringUtil.format((() => {
