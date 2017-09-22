@@ -1,3 +1,7 @@
+#mytest
+
+[![Build Status](https://travis-ci.org/robisys/wire-webapp.svg?branch=dev)](https://travis-ci.org/robisys/wire-webapp)
+
 # Wire™
 
 [![We are hiring](https://github.com/wireapp/wire/blob/master/assets/header-small.png?raw=true)](https://wire.softgarden.io/job/616102)
