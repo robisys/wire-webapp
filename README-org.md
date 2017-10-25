@@ -1,6 +1,10 @@
 
 
+
 #mytest
+
+[![Build Status](https://travis-ci.org/robisys/wire-webapp.svg?branch=dev)](https://travis-ci.org/robisys/wire-webapp)
+
 
 Build Status
 Wire™
